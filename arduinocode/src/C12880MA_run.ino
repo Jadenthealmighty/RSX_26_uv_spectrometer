@@ -5,8 +5,9 @@
 
 #include <Arduino.h>
 
-#define SPEC_TRG         A0
-#define SPEC_ST          A1
+// I switched TRG and ST on 5/09
+#define SPEC_ST          A0
+#define SPEC_TRG         A1
 #define SPEC_CLK         A2
 #define SPEC_VIDEO       A3
 
