@@ -26,7 +26,7 @@ const int EXPSR_LOW = 200;
 // exposure too high
 const int EXPSR_HI = 400;
 
-const int integrateClkVals[] = {1, 2000, 10000, 29000};
+const int integrateClkVals[] = {1, 2000, 10000, 25000};
 // The best values for the clock speed, note that each of these is divided by 5 for the final value for cycle time.
 const int delayVals[] = {1, 5, 10, 20};
 
