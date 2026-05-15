@@ -21,6 +21,7 @@ if plot_in_bkg:
     matplotlib.use("QtAgg")
     from scipy.signal import find_peaks
     from scipy.signal import peak_widths
+    import addcopyfighandler
 
 
 ports = serial.tools.list_ports.comports()
@@ -56,6 +57,7 @@ draw_sum = False
 integrate_info = np.zeros(2)
 integrate_info_tot = None
 ytot= None
+
 
 
 plt.ion()
@@ -139,7 +141,6 @@ try:
             continue
         try:
             data = np.array([float(x) for x in raw.split(',') if x.strip() != ''])
-            print("\n")
             integrate_info[0] = data[0]
             integrate_info[1] = data[1]
         except ValueError:
@@ -158,7 +159,7 @@ try:
             summed_max = find_max(summed) / 1800 if find_max(summed) > 0 else 1
             y = summed / summed_max
         else:
-            y = data[:NUM_PIXELS] / 2
+            y = data[:NUM_PIXELS]
 
         line.set_ydata(y)
         line.set_xdata(x_ax_waves)
@@ -166,7 +167,8 @@ try:
         ax.set_ylim(0, max(y) * 1.1 + 1)
 
         if plot_in_bkg:
-            peaks, properties = find_peaks(data, height=100, distance=50)
+            cutoff_peak = 130
+            peaks, properties = find_peaks(data, height=cutoff_peak, distance=20)
             peak_x = x_ax_waves[peaks]
             peak_y = y[peaks]
 
@@ -192,7 +194,7 @@ try:
             
             # print(y[-4:])
             max_y = np.max(y)
-            print('\nMax intensity: {}'.format(max_y))
+            # print('\nMax intensity: {}'.format(max_y))
             
             # TEST ENDS HERE
 

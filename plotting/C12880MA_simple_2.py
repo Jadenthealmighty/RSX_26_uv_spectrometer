@@ -1,7 +1,11 @@
-import serial
 import numpy as np
 import matplotlib.pyplot as plt
 import serial.tools.list_ports
+
+# Can delete later
+import sys
+import select
+import addcopyfighandler
 
 
 BAUD = 115200
@@ -38,6 +42,7 @@ ax.set_ylabel("Intensity")
 plt.grid(True)
 
 print("Listening on serial port... (Ctrl+C to quit)")
+print("Press b to copy plot")
 
 plt.legend()
 
@@ -67,12 +72,20 @@ try:
             y = summed / summed_max
         else:
             y = data[:NUM_PIXELS]
+        
+        if select.select([sys.stdin], [], [], 0)[0]:
+            command = sys.stdin.readline().strip()
+            if command == 'b':
+                print("You have 10 seconds to copy the plot")
+                plt.pause(10)
+                continue
+
 
         line.set_ydata(y)
         line.set_xdata(x_ax_waves)
         ax.set_xlim(300, 900)
         ax.set_ylim(0, max(y) * 1.1 + 1)
-        plt.pause(0.001)
+        plt.pause(0.01)
         
 
 except KeyboardInterrupt:
